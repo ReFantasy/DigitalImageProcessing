@@ -1,6 +1,5 @@
 #include <iostream>
 #include "opencv2/opencv.hpp"
-#include "Assist/Assist.h"
 #include "ImageAlgorithm/NearestNeighborInterpolation.h"
 #include "ImageAlgorithm/BilinearInterpolation.h"
 #include "ImageAlgorithm/TripleInterpolation.h"
@@ -14,7 +13,7 @@ TIMER timer;
 int main()
 {
 	auto mat = imread("C:/Users/30974/Desktop/SrcImage/DIP3E_Original_Images_CH02/Fig0220(a)(chronometer 3692x2812  2pt25 inch 1250 dpi).tif",0);
-	mat = ConverToCV8UC1(mat);
+	cvtColor(mat, mat, CV_8UC1);
 	cout << mat.rows << " " << mat.cols << endl;
 	Mat tmp;
 	
