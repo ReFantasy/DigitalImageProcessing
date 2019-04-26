@@ -12,18 +12,18 @@ using namespace Eigen;
 TIMER timer;
 int main()
 {
-	auto mat = imread("C:/Users/30974/Desktop/SrcImage/DIP3E_Original_Images_CH02/Fig0220(a)(chronometer 3692x2812  2pt25 inch 1250 dpi).tif",0);
+	auto mat = imread("D:/Qsync/Code/DIP/DigitalImageProcessing/src/Data/DIP3E_CH02_Original_Images/Fig0222(b)(cameraman).tif",0);
 	cvtColor(mat, mat, CV_8UC1);
 	cout << mat.rows << " " << mat.cols << endl;
 	Mat tmp;
 	
 	timer.Reset();
-	tmp = BilinearInterpolation(mat,7200,5600);
+	tmp = BilinearInterpolation(mat,512,512);
 	auto t = timer.GetTime();
 	cout << "BilinearInterpolation time: "<<t.count() << endl;
 
 	timer.Reset();
-	auto tmp2 = TripleInterpolation(mat, 7200, 5600);
+	auto tmp2 = TripleInterpolation(mat, 512, 512);
 	auto t2 = timer.GetTime();
 	cout << "TripleInterpolation time: "<<t2.count() << endl;
 

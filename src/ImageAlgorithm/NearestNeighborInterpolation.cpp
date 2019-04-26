@@ -1,6 +1,4 @@
 #include "NearestNeighborInterpolation.h"
-#include "../Math/Math.h"
-#include "../Assist/Assist.h"
 
 Mat NearestNeighborInterpolation(const Mat &input, int new_row, int new_col)
 {
