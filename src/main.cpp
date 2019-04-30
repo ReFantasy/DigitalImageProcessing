@@ -5,6 +5,7 @@
 #include "ImageAlgorithm/TripleInterpolation.h"
 #include "Assist/TIMER.h"
 #include "Eigen/Dense"
+
 using namespace std;
 using namespace cv;
 using namespace Eigen;
@@ -12,41 +13,36 @@ using namespace Eigen;
 TIMER timer;
 int main()
 {
-	auto mat = imread("D:/Qsync/Code/DIP/DigitalImageProcessing/src/Data/DIP3E_CH02_Original_Images/Fig0222(b)(cameraman).tif",0);
-	cvtColor(mat, mat, CV_8UC1);
-	cout << mat.rows << " " << mat.cols << endl;
-	Mat tmp;
+	auto src = imread("D:/Qsync/Code/DIP/DigitalImageProcessing/src/Data/DIP3E_CH02_Original_Images/Fig0227(a)(washington_infrared).tif",0);
+	Mat tmp1;
+	src.copyTo(tmp1);
+
+	cvtColor(tmp1, tmp1, CV_8UC1);
+	auto pdata = tmp1.data;
+
+	for (int i = 0; i < tmp1.rows * tmp1.cols; i++)
+	{
+		uchar tmp = 0xfe;
+		pdata[i] = (pdata[i] & tmp);
+	}
 	
-	timer.Reset();
-	tmp = BilinearInterpolation(mat,512,512);
-	auto t = timer.GetTime();
-	cout << "BilinearInterpolation time: "<<t.count() << endl;
+	Mat diff(src.rows,src.cols, CV_8UC1);
+	
+	for (int i = 0; i < tmp1.rows * tmp1.cols; i++)
+	{
+		
+		diff.data[i] = src.data[i] - tmp1.data[i];
+	}
+	for (int i = 0; i < tmp1.rows * tmp1.cols; i++)
+	{
 
-	timer.Reset();
-	auto tmp2 = TripleInterpolation(mat, 512, 512);
-	auto t2 = timer.GetTime();
-	cout << "TripleInterpolation time: "<<t2.count() << endl;
+		diff.data[i] = (diff.data[i]==0?0:255);
+	}
 
-	imwrite("2.jpg", tmp);
-	imwrite("3.jpg", tmp2);
-	imshow("src", mat);
-	imshow("BilinearInterpolation", tmp);
-	imshow("TripleInterpolation", tmp2);
-
+	imshow("src", src);
+	imshow("tmp1", tmp1);
+	imshow("diff", diff);
 	waitKey();
 
-	//Matrix3d A2;
-	//A2 << 1, 2, 3,
-	//	3, 1, 2,
-	//	1, 2, 0;
-	//Vector3d B2(14, 11, 5);
-	//Vector3d x12 = A2.colPivHouseholderQr().solve(B2); //right Answer    
-	//Vector3d x62 = A2.lu().solve(B2);                  // right Answer
-
-	//std::cout << A2 << std::endl;
-	//std::cout << "The solution is:\n" << x12 << "\n\n" << x62 << std::endl;
-
-
-	system("pause");
 	return 0;
 }
